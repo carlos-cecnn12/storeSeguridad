@@ -4,7 +4,7 @@ const storeMod = require("./models/store");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 var app = express();
-var cors = require("cors");
+
 
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(
@@ -24,6 +24,15 @@ var db = mongoose.connection;
 app.use("/", storeRoutes);
 db.on("error", console.error.bind(console, "Error en la conexión"));
 db.once("open", function() {
+    db.dropDatabase()
+    storeMod.create({users:[{
+        "username": "room",
+        "password":"camp",
+        "securityQuestion":{
+        "question": "room",
+        "answer":"camp"
+    }
+    }]})
 });
 
 app.listen("8080", () => {
