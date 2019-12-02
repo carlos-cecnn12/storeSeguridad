@@ -1,7 +1,7 @@
 const store = require("../models/store")
 
 exports.newUser= (req,res) =>{
-    store.create({ users:{
+    var tmpUser ={
         mail: req.body.mail,
         username:req.body.username,
         password:req.body.password,
@@ -10,16 +10,20 @@ exports.newUser= (req,res) =>{
             answer: req.body.answer
         },
     trials:3,
-blocked:false}
-    }, function(err){
-        if(err)res.send("error")
-        else res.render("index.html")})
+    blocked:false}
+
+    store.findOne({_id:"5de4a4cb3c0557a27621ab3c"}).then(function(data,err) {
+        //modify and save the object received via callback
+        data.users.push(tmpUser);
+        data.save();
+     if(err)res.send("error")
+     else res.render("index.html")
     /*store.updateOne({},{$push:{users:tmpUser}},
         function(err){
         if(err)res.send("error")
         else res.send("user created")
     })*/
-}
+})}
 
 exports.loginUser =(req,res)=>{
     store.find({ }).then(data=>{
@@ -102,19 +106,3 @@ exports.registerPage = (req,res) =>{
     res.render("register.html")
 }
 
-function searchIndexMail(nameKey, myArray) {
-    for (var i = 0; i < myArray.length; i++) {
-      if (myArray[i].mail === nameKey) {
-        return i;
-      }
-    }
-    return false;
-  }
-  function searchIndexUser(nameKey, myArray) {
-    for (var i = 0; i < myArray.length; i++) {
-      if (myArray[i].username === nameKey) {
-        return i;
-      }
-    }
-    return false;
-  }

@@ -26,7 +26,7 @@ var StoreSchema = new Schema({
     products : [prodSchema]
 })
 
-userSchema.pre("save", function(next) {
+userSchema.pre('save', function(next) {
     var comp = this;
   
     // only hash the password if it has been modified (or is new)

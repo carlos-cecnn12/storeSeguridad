@@ -34,7 +34,20 @@ db.once("open", function() {
         "question": "room",
         "answer":"camp"
     }
-    }]})*/
+    }]})
+    storeMod.create({"products":[{
+     "name":"Galaxy Case",
+           "price":50,
+          "description":"A case for your Galaxy phone"},
+           {
+           "name":"iPhone Case",
+           "price":60,
+               "description":"A case for your iPhone"},
+               {
+                   "name":"Xiaomi Case",
+                   "price":30,
+                   "description":"A case for your Xiaomi phone"}
+       ]})*/
 });
 
 app.listen("8080", () => {
