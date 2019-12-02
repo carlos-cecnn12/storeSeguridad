@@ -16,6 +16,8 @@ var userSchema = new Schema({
         question: String,
         answer: String
     },
+    trials:Number,
+    blocked:Boolean,
     cart:[prodSchema]
 })
 
@@ -45,7 +47,7 @@ userSchema.pre("save", function(next) {
     });
   });
   
-  StoreSchema.methods.comparePassword = function(candiStringPassword, cb) {
+  userSchema.methods.comparePassword = function(candiStringPassword, cb) {
     bc.compare(candiStringPassword, this.password, function(err, isMatch) {
       if (err) return cb(err);
       cb(null, isMatch);
