@@ -147,10 +147,15 @@ exports.socketPage = (req,res) =>{
                         status:"PROCESSING"
                     }
                     store.findOneAndUpdate({},{$push:{transactions:tmpTransaction}},{ returnOriginal: false },
-                        function (err, documents) {
-                            var tmp = documents.transactions
+                        function (err) {
+                            store.find({}).then(data=>{
+                                
+                                var tmp = data[0].transactions
+                        
                            if(err)res.send("error")
-                           else res.render("socket.html",{data:tmp[0]})
+                           else res.render("socket.html",{data:tmp[tmp.length-1]})
+                            })
+                            
                           
                         })
                     
