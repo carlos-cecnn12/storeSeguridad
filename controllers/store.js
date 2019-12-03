@@ -132,7 +132,7 @@ exports.socketPage = (req,res) =>{
         console.log(req.body)
         data[0].users.forEach(user=>{
             if(user.username===req.params.username){
-                if(user.securityQuestion.answer==req.body.answer){
+               
                     var total = 0;
                     
                     user.cart.forEach(item=>{
@@ -161,7 +161,7 @@ exports.socketPage = (req,res) =>{
                     
                     
                     
-                }else(res.send("wrong answer"))
+               
             }
         })
     })
