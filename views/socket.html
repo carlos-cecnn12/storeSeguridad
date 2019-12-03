@@ -12,7 +12,14 @@
 <br>
 <input type="text" placeholder="Type code here..." id="myInput">
 <br>
+
     <button type="button" onclick="code();">Enviar código</button>
+
+    <textarea id="text-val" rows="4" hidden>
+            transaction id: <%=data._id%>
+            total: <%=data.amount%>
+    </textarea><br/>
+    <input type="button" id="dwn-btn" value="Download bill" hidden/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
     <script>
@@ -28,14 +35,15 @@
       socket.on('code_response', function(data) {
         console.log(data);
         if(data.response==="SUCCESS"){
-            var a = document.createElement('a');
-a.setAttribute('href', dataUri);
-a.setAttribute('download', filename);
-
-var aj = $(a);
-aj.appendTo('body');
-aj[0].click();
-aj.remove();
+            var btn = document.getElementById("dwn-btn")
+            btn.removeAttribute("hidden");
+            document.getElementById("dwn-btn").addEventListener("click", function(){
+    // Generate download of hello.txt file with some content
+    var text = document.getElementById("text-val").value;
+    var filename = "bill.txt";
+    
+    download(filename, text);
+}, false);
         }
       });
       function code (){
@@ -50,4 +58,16 @@ aj.remove();
         var transactionID = document.getElementById("transaction").value;
         socket.emit('transaction', {'id': userid, 'amount': amount, 'transaction': transactionID });
       }
+      function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
     </script>

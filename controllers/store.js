@@ -112,15 +112,6 @@ exports.addCart=(req,res)=>{
                             })
 }
 
-exports.transactionPost=(req,res)=>{
-    var tmp =
-    store.update({"users.username":req.params.username},
-                            { $push: {"users.$.cart": tmpCart}},function(err){
-                                if (err) res.send("error")
-                                res.redirect(`/${req.params.username}/store`);
-                            })
-}
-
 
 exports.getIndex = (req,res) =>{
     res.render("index.html")
