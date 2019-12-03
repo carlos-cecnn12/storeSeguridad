@@ -31,13 +31,19 @@ exports.loginUser =(req,res)=>{
         console.log(data[0].users)
         data[0].users.forEach(user=>{
             if (user.mail===req.body.mail){
+                
                 if(user.blocked){
                     res.send("user blocked, contact admin")
                 }else{
-                user.comparePassword(req.body.password, function(err, isMatch) {
+                user.comparePassword(req.body.password, function(err, isMatch,next) {
+                    console.log(isMatch)
                     if (err) throw err;
+
                     if (isMatch) {
+                        
                       res.redirect(`${user.username}/store`);
+                     
+                     
                     } else {
                         
                         if(user.trials>1){
@@ -67,6 +73,7 @@ exports.loginUser =(req,res)=>{
                 user.comparePassword(req.body.password, function(err, isMatch) {
                     if (err) throw err;
                     if (isMatch) {
+                        console.log("j")
                       res.redirect(`${user.username}/store`);
                     } else {
                         
@@ -88,7 +95,7 @@ exports.loginUser =(req,res)=>{
                         } 
                     } 
                   });
-            }}else res.send("user doesn't exist")
+            }}
         })  
     })
 }
@@ -127,9 +134,7 @@ exports.registerPage = (req,res) =>{
     res.render("register.html")
 }
 
-exports.passwordRecovery = (req,res) =>{
-    res.render("password1.html")
-}
+
 
 
 exports.socketPage = (req,res) =>{
