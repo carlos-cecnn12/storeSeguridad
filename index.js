@@ -7,6 +7,7 @@ var app = express();
 
 // EJS
 app.engine("html", require("ejs").renderFile);
+app.use( express.static('public'));
 
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(

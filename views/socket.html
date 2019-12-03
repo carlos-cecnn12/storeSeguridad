@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Secure Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: teal;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+        <%console.log(data)%>
+        <div class="w3-container w3-teal">
+                <h1>Bank information</h1>
+            </div>
+        <br>
+        <input type="text"  id="userid" placeholder="Enter your bank id">
+        <br>
+        <input type="text" disabled id="amount" value="<%=data.amount%>">
+        <br>
+        <input type="text" disabled id="transaction" value="<%=data._id%>">
+        <br>
+        <input type="text" placeholder="Type code here..." id="myInput">
+            <button type="button" onclick="code();">Get Value</button>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+       
+            <script>
+             var URL_SERVER = 'https://bankofm:443';
+              var socket = io.connect(URL_SERVER);
+              socket.on('bank_error', function(data) {
+                alert(data);
+                console.log(data);
+              });
+              socket.on('message', function(data) {
+                alert(data);
+              });
+              socket.on('code_response', function(data) {
+                alert(data);
+                console.log(data);
+              });
+              function code (){
+                // Selecting the input element and get its value
+                var inputVal = document.getElementById("myInput").value;
+                socket.emit('code', {code: inputVal});
+              }
+              function transaction (){
+                // Selecting the input element and get its value
+                var userid = document.getElementById("userid").value;
+                var amount = document.getElementById("amount").value;
+                var transactionID = document.getElementById("transactionID").value;
+                socket.emit('transaction', {'id': userid, 'amount': amount, 'transaction': transaction });
+              }
+            </script>
+
+
+</div>
+    <footer class="footer">
+
+        <p>Seguridad Informática</p>
+
+    </footer>
+
+</body>
+
+
+</html>

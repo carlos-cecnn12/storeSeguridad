@@ -34,11 +34,10 @@ exports.loginUser =(req,res)=>{
                 if(user.blocked){
                     res.send("user blocked, contact admin")
                 }else{
-                    var ind = searchIndexMail(req.body.mail, data[0].users)
                 user.comparePassword(req.body.password, function(err, isMatch) {
                     if (err) throw err;
                     if (isMatch) {
-                      res.send("welcome");
+                      res.redirect(`${user.username}/store`);
                     } else {
                         
                         if(user.trials>1){
@@ -68,7 +67,7 @@ exports.loginUser =(req,res)=>{
                 user.comparePassword(req.body.password, function(err, isMatch) {
                     if (err) throw err;
                     if (isMatch) {
-                      res.send("welcome");
+                      res.redirect(`${user.username}/store`);
                     } else {
                         
                         if(user.trials>1){
@@ -94,6 +93,28 @@ exports.loginUser =(req,res)=>{
     })
 }
 
+exports.addCart=(req,res)=>{
+    console.log(req.body)
+    var tmpCart={name:req.body.name,
+    price: req.body.price,
+    description: req.body.description}
+    store.update({"users.username":req.params.username},
+                            { $push: {"users.$.cart": tmpCart}},function(err){
+                                if (err) res.send("error")
+                                res.redirect(`/${req.params.username}/store`);
+                            })
+}
+
+exports.transactionPost=(req,res)=>{
+    var tmp =
+    store.update({"users.username":req.params.username},
+                            { $push: {"users.$.cart": tmpCart}},function(err){
+                                if (err) res.send("error")
+                                res.redirect(`/${req.params.username}/store`);
+                            })
+}
+
+
 exports.getIndex = (req,res) =>{
     res.render("index.html")
 }
@@ -105,4 +126,60 @@ exports.loginPage = (req,res) =>{
 exports.registerPage = (req,res) =>{
     res.render("register.html")
 }
+
+exports.socketPage = (req,res) =>{
+    store.find({}).then(data=>{
+        console.log(req.body)
+        data[0].users.forEach(user=>{
+            if(user.username===req.params.username){
+                if(user.securityQuestion.answer==req.body.answer){
+                    var total = 0;
+                    
+                    user.cart.forEach(item=>{
+                        total+=item.price
+                        
+                       
+                    })
+                    
+                    var tmpTransaction={
+                        user:user.username,
+                        amount:total,
+                        status:"PROCESSING"
+                    }
+                    store.findOneAndUpdate({},{$push:{transactions:tmpTransaction}},{ returnOriginal: false },
+                        function (err, documents) {
+                            var tmp = documents.transactions
+                           if(err)res.send("error")
+                           else res.render("socket.html",{data:tmp[0]})
+                          
+                        })
+                    
+                    
+                    
+                }else(res.send("wrong answer"))
+            }
+        })
+    })
+  
+}
+
+exports.storePage = (req,res)=>{
+   store.find({}).then(data=>{
+       
+    res.render("store.html",{products:data[0].products})
+   })
+}
+
+exports.cartPage = (req,res)=>{
+    store.find({}).then(data=>{
+        data[0].users.forEach(user=>{
+            if(user.username===req.params.username){
+                res.render("cart.html",{data:{products:user.cart,
+                question:user.securityQuestion.question}})
+            }
+        })
+     
+    })
+ }
+ 
 

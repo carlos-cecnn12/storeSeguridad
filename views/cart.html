@@ -21,17 +21,14 @@
 
 <body>
     <div class="w3-container w3-teal">
-        <h1>Secure Store</h1>
+        <h1>Your cart</h1>
     </div>
     <div align="center">
         <div class="grid-container"> 
-       
-        <%products.forEach((producto)=>{ %>
+        <%console.log(data)%>
+        <%data.products.forEach((producto)=>{ %>
             <div>
-                <form action="addCart" method="POST"> 
-                    
-                        
-                    <button type="submit" >
+ 
                             
                             <input type="hidden" name="name" value="<%=producto.name%>"/>
                             <input type="hidden" name="price" value="<%=producto.price%>"/>
@@ -39,16 +36,18 @@
                             <img alt="Submit" width="150" height="180"  src=<%="/img/" +producto.name + ".jpeg" %> >
                             <br><%=producto.name%>
                             <br><%=producto.price%>
-                            <br><a>Add to cart</a>
-                    </button>
+                           
                     
-                </form> 
             </div>
             <%});%>
         </div>
         <div class="col-sm-4" align="center">
-            <form action="cartPage" method="GET">  
-                <button type="submit" class="btn btn-outline-success btn-lg">See my cart</button>
+            <form action="contactSocket" method="POST">  
+                
+                <h2>Please answer your security question before buying</h2>
+                <p><%=data.question%></p>
+                <input name="answer" required placeholder="Answer your security question">
+                <button type="submit" class="btn btn-outline-success btn-lg">Buy</button>
             </form>
     </div>
           

@@ -8,6 +8,13 @@ var prodSchema = new Schema({
     description:String
 })
 
+var tranSchema=new Schema({
+  
+  user:String,
+  amount:String,
+  status:String
+})
+
 var userSchema = new Schema({
     username:String,
     mail:String,
@@ -23,7 +30,8 @@ var userSchema = new Schema({
 
 var StoreSchema = new Schema({
     users : [userSchema],
-    products : [prodSchema]
+    products : [prodSchema],
+    transactions:[tranSchema]
 })
 
 userSchema.pre('save', function(next) {
