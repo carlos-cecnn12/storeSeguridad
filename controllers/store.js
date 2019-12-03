@@ -162,9 +162,15 @@ exports.socketPage = (req,res) =>{
                                 
                                 var tmp = data[0].transactions
                         
-                           if(err)res.send("error")
-                           else res.render("socket.html",{data:tmp[tmp.length-1]})
-                            })
+                                if(err)res.send("error")
+                                else {
+                               store.findOneAndUpdate({"users.username":req.params.username}, {$set:{"users.$.cart":[]}},
+                               function(err){
+                                    if(err) res.send("error")
+                                    else res.render("socket.html",{data:tmp[tmp.length-1]})
+                               })
+                               
+                            }})
                             
                           
                         })
