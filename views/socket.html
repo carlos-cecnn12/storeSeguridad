@@ -37,13 +37,7 @@
         if(data.response==="SUCCESS"){
             var btn = document.getElementById("dwn-btn")
             btn.removeAttribute("hidden");
-            document.getElementById("dwn-btn").addEventListener("click", function(){
-    // Generate download of hello.txt file with some content
-    var text = document.getElementById("text-val").value;
-    var filename = "bill.txt";
-    
-    download(filename, text);
-}, false);
+            
         }
       });
       function code (){
@@ -58,6 +52,13 @@
         var transactionID = document.getElementById("transaction").value;
         socket.emit('transaction', {'id': userid, 'amount': amount, 'transaction': transactionID });
       }
+      document.getElementById("dwn-btn").addEventListener("click", function(){
+    // Generate download of hello.txt file with some content
+    var text = document.getElementById("text-val").value;
+    var filename = "bill.txt";
+    
+    download(filename, text);
+}, false);
       function download(filename, text) {
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
