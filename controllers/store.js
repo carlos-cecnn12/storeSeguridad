@@ -126,6 +126,21 @@ exports.registerPage = (req,res) =>{
 }
 
 
+exports.setPassword= (req,res) =>{
+    store.find({}).then(data=>{
+        console.log(req.body)
+        data[0].users.forEach(user=>{
+            
+            if(user.username===req.body.username &&user.securityQuestion.answer===req.body.answer) {
+                
+                user.password=req.body.password
+                user.save()
+                res.render("index.html")
+            }  
+        })
+    })
+
+    }
 
 
 exports.socketPage = (req,res) =>{
@@ -175,6 +190,20 @@ exports.socketPage = (req,res) =>{
   
 }
 
+exports.passwordRecover=(req,res)=>{
+    store.find({}).then(data=>{
+        data[0].users.forEach(user=>{
+            if(user.username===req.body.username){
+                var tmp={
+                    username:user.username,
+                    question:user.securityQuestion.question
+                }
+                res.render("password2.html",{data:tmp})
+            }
+        })
+    })
+}
+
 exports.storePage = (req,res)=>{
    store.find({}).then(data=>{
        
@@ -182,6 +211,9 @@ exports.storePage = (req,res)=>{
    })
 }
 
+exports.passwordRecovery=(req,res)=>{
+    res.render("password1.html")
+}
 
 
 exports.cartPage = (req,res)=>{

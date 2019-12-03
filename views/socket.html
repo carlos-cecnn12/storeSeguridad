@@ -18,8 +18,9 @@
     <textarea id="text-val" rows="4" hidden>
             transaction id: <%=data._id%>
             total: <%=data.amount%>
+            AAAAB3NzaC1yc2EAAAADAQABAAABAQDjjNJNu1R71/VnodJYWuKVqd+FZeePDdDhzvj4mg5ok/h26pX3w4Pe8OnQG5w0dSiZiNB0hyKwx3cJgXPfFazMaT$
     </textarea><br/>
-    <input type="button" id="dwn-btn" value="Download bill" hidden/>
+    <button hidden type="button" id="dwn-btn" value="Download bill" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 
     <script>
@@ -35,9 +36,7 @@
       socket.on('code_response', function(data) {
         console.log(data);
         if(data.response==="SUCCESS"){
-            var btn = document.getElementById("dwn-btn")
-            btn.removeAttribute("hidden");
-            
+            document.getElementById("dwn-btn").click()
         }
       });
       function code (){
