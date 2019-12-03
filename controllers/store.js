@@ -127,6 +127,11 @@ exports.registerPage = (req,res) =>{
     res.render("register.html")
 }
 
+exports.passwordRecovery = (req,res) =>{
+    res.render("password1.html")
+}
+
+
 exports.socketPage = (req,res) =>{
     store.find({}).then(data=>{
         console.log(req.body)
@@ -174,6 +179,8 @@ exports.storePage = (req,res)=>{
     res.render("store.html",{products:data[0].products})
    })
 }
+
+
 
 exports.cartPage = (req,res)=>{
     store.find({}).then(data=>{
